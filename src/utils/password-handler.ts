@@ -1,7 +1,7 @@
 import { hash, genSalt } from "bcrypt";
 
 const generateSalt = async (): Promise<string> => {
-  return genSalt(10);
+  return await genSalt(10);
 };
 
 const hashPassword = async (plainPassword: string): Promise<string> => {
