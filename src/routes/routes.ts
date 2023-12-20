@@ -14,7 +14,7 @@ export const routes: IRoutes[] = [
     router: (router: Router, pool: Pool) =>
       new AuthController(
         router,
-        new AuthService(new AuthRepository(pool))
+        new AuthService(new AuthRepository(pool, new UserRepository(pool)))
       ).getRouter()
   },
   {
