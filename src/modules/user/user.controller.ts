@@ -17,9 +17,16 @@ export class UserController implements IRouter {
         });
     });
     this.router.delete("/:id", (req, res): void => {
-      const { id } = req.params
-      this.userService.deleteUser(parseInt(id)).then(() => { res.status(204) }).catch((error) => { throw new Error(error as string) })
-    })
+      const { id } = req.params;
+      this.userService
+        .deleteUser(parseInt(id))
+        .then(() => {
+          res.status(204);
+        })
+        .catch((error) => {
+          throw new Error(error as string);
+        });
+    });
   }
 
   getRouter(): Router {
