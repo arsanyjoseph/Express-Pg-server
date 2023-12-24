@@ -1,12 +1,7 @@
 import { type Request } from "express"
 import jwt, { type JwtPayload } from "jsonwebtoken"
-import { type UserRoles } from "../types/userRoles"
-
-export interface IJwtPayload extends JwtPayload {
-    id: number
-    email: string
-    role: UserRoles
-}
+import { type IJwtPayload } from "../types/jwt"
+import { HttpErrorMessage } from "../constants/http"
 
 const signToken = (payload: IJwtPayload): string => {
     const secret = process.env.JWT_SECRET as unknown as string
@@ -14,14 +9,14 @@ const signToken = (payload: IJwtPayload): string => {
 }
 
 const verifyToken = (token?: string, secret?: string): JwtPayload | string => {
-    if (!secret || !token) throw new Error("Error while parsing token")
+    if (!secret || !token) throw new Error(HttpErrorMessage.UNAUTHORIZED.NO_TOKEN)
     return jwt.verify(token, secret)
 }
 
 const extractTokenFromHeaders = (req: Request): string | undefined => {
     const authHeader = req.headers.authorization
     const token = authHeader?.split(' ')[1];
-    if (!token) throw new Error("No Token Provided")
+    if (!token) throw new Error(HttpErrorMessage.UNAUTHORIZED.NO_TOKEN)
     return token
 }
 
