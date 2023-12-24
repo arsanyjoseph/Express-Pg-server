@@ -5,7 +5,8 @@ import { type AuthDto } from "./auth.dto";
 import passwordHandler from "../../utils/passwordHandler";
 import { UserRoles } from "../../types/userRoles";
 import { HttpErrorMessage } from "../../constants/http";
-import { InsertQueryBuilder } from "../../db/queries/queryBuilders";
+import { type IInsert, InsertQueryBuilder } from "../../db/queries/queryBuilders";
+import { UserEntity } from "../user/user.entity";
 
 export class AuthRepository {
   constructor(private readonly pool: Pool, private readonly userRepository: UserRepository) { }
@@ -21,9 +22,22 @@ export class AuthRepository {
     if (foundUser)
       throw new Error(HttpErrorMessage.SERVER_ERROR.DUPLICATE_CREDS);
     const hashedPassword = await passwordHandler.hashPassword(password);
+    const queryParams: IInsert = {
+      tableName: "user",
+      insertedColumns: [
+        { columnName: UserEntity.FIRST_NAME, value: "$1" },
+        { columnName: UserEntity.LAST_NAME, value: "$2" },
+        { columnName: UserEntity.EMAIL, value: "$3" },
+        { columnName: UserEntity.PASSWORD, value: "$4" },
+        { columnName: UserEntity.ROLE, value: "$5" },
+        { columnName: UserEntity.CREATED_AT, value: "$6" },
+        { columnName: UserEntity.UPDATED_AT, value: "$7" },
+        { columnName: UserEntity.IS_ACTIVE, value: "$8" },
+        { columnName: UserEntity.DELETED_AT, value: "$9" }],
+      returnColumns: ["*"]
+    }
     const query = {
-      // text: 'INSERT INTO public.user ("firstName", "lastName", email, password, role, "createdAt", "updatedAt", "isActive", "deletedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      text: InsertQueryBuilder("user", ["firstName", "lastName", "email", "password", "role", "createdAt", "updatedAt", "isActive", "deletedAt"], ["$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"], ["*"]),
+      text: InsertQueryBuilder(queryParams),
       values: [
         firstName,
         lastName,
