@@ -22,7 +22,7 @@ export class UserController implements IRouter {
 
   private getProfile(req: CustomRequest, res: Response, next: NextFunction): void {
     if (req.user) {
-      this.userService.getUser(req.user.id).then((user) => res.status(200).json({ user })).catch((errorMessage) => {
+      this.userService.getUser(req.user.id).then((user) => res.status(200).json(user)).catch((errorMessage) => {
         const error: IError = {
           message: errorMessage,
           name: HttpErrorName.SERVER_ERROR,
