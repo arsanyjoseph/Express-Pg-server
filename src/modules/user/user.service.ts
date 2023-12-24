@@ -13,4 +13,9 @@ export class UserService {
     const user = await this.userRepository.getUserById(id)
     return removePasswordFromUser(user);
   }
+
+  async updateUser(userDto: UserDto): Promise<Omit<UserDto, "password">> {
+    const user = await this.userRepository.updateUserProfile(userDto)
+    return removePasswordFromUser(user)
+  }
 }
