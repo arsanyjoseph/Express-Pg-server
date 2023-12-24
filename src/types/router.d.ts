@@ -7,5 +7,7 @@ export interface IRouter {
 
 export interface IRoutes {
   path: string;
+  private: boolean;
   router: (router: Router, pool: Pool) => Router;
+  middleware?: () => any;
 }
