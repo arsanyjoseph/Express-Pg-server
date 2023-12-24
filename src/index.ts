@@ -4,7 +4,7 @@ import { App } from "./main";
 import { routes } from "./routes/routes";
 import { middlewares } from "./middlewares/express.middleware";
 import { authMiddleware } from "./middlewares/auth.middleware";
-import { DBConnection } from "./modules/db/db";
+import { DBConnection } from "./db/db";
 import { Router } from "./routes/router";
 
 dotenv.config();

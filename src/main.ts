@@ -1,5 +1,5 @@
 import { type Express, type Router } from "express";
-import { type DBConnection } from "./modules/db/db";
+import { type DBConnection } from "./db/db";
 import { type IRoutes } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 
