@@ -5,6 +5,7 @@ import { type AuthDto } from "./auth.dto";
 import passwordHandler from "../../utils/passwordHandler";
 import { UserRoles } from "../../types/userRoles";
 import { HttpErrorMessage } from "../../constants/http";
+import { InsertQueryBuilder } from "../../db/queries/queryBuilders";
 
 export class AuthRepository {
   constructor(private readonly pool: Pool, private readonly userRepository: UserRepository) { }
@@ -21,7 +22,8 @@ export class AuthRepository {
       throw new Error(HttpErrorMessage.SERVER_ERROR.DUPLICATE_CREDS);
     const hashedPassword = await passwordHandler.hashPassword(password);
     const query = {
-      text: 'INSERT INTO public.user ("firstName", "lastName", email, password, role, "createdAt", "updatedAt", "isActive", "deletedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      // text: 'INSERT INTO public.user ("firstName", "lastName", email, password, role, "createdAt", "updatedAt", "isActive", "deletedAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      text: InsertQueryBuilder("user", ["firstName", "lastName", "email", "password", "role", "createdAt", "updatedAt", "isActive", "deletedAt"], ["$1", "$2", "$3", "$4", "$5", "$6", "$7", "$8", "$9"], ["*"]),
       values: [
         firstName,
         lastName,
