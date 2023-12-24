@@ -27,5 +27,8 @@ export const HttpErrorMessage = {
     SERVER_ERROR: {
         NO_MESSAGE: "Something went wrong...",
         DUPLICATE_CREDS: "Email is already registered. Try Signing In"
+    },
+    NOT_FOUND: {
+        NO_ROUTE: "Invalid URL"
     }
 }

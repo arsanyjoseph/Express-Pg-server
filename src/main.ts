@@ -2,6 +2,7 @@ import { type Express, type Router } from "express";
 import { type DBConnection } from "./db/db";
 import { type IRoutes } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
+import { notFoundHandler } from "./middlewares/404Handler.middleware";
 
 export class App {
   constructor(
@@ -20,6 +21,7 @@ export class App {
     });
     db.connect();
     this.registerMiddleware(errorHandlerMiddleware)
+    this.registerMiddleware(notFoundHandler)
   }
 
   private registerRouter(routePath: string, router: Router, middleware?: () => void): void {
