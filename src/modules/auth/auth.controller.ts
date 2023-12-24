@@ -4,6 +4,7 @@ import { type IRouter } from "../../types/router";
 import { type AuthDto } from "./auth.dto";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type UserDto } from "../user/user.dto";
+import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/http";
 
 export class AuthController implements IRouter {
   constructor(
@@ -28,9 +29,9 @@ export class AuthController implements IRouter {
         });
     } else {
       const error: IError = {
-        message: "Please provide Valid Credentials",
-        name: "Bad Request",
-        statusCode: 400
+        message: HttpErrorMessage.BAD_REQUEST.INVALID_CREDS,
+        name: HttpErrorName.BAD_REQUEST,
+        statusCode: HttpStatusCode.BAD_REQUEST
       }
       next(error)
     }
@@ -40,11 +41,11 @@ export class AuthController implements IRouter {
     const response = this.authService.register(req.body as UserDto);
     response
       .then((user) => res.status(201).json(user))
-      .catch((errorMessage) => {
+      .catch((err) => {
         const error: IError = {
-          message: errorMessage,
-          name: "Internal Server Error",
-          statusCode: 500
+          message: (err as Error).message,
+          name: HttpErrorName.SERVER_ERROR,
+          statusCode: HttpStatusCode.SERVER_ERROR
         }
         next(error);
       });
