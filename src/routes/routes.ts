@@ -11,6 +11,7 @@ import { type IRoutes } from "../types/router";
 export const routes: IRoutes[] = [
   {
     path: "/auth",
+    private: false,
     router: (router: Router, pool: Pool) =>
       new AuthController(
         router,
@@ -19,10 +20,11 @@ export const routes: IRoutes[] = [
   },
   {
     path: "/user",
+    private: true,
     router: (router: Router, pool: Pool) =>
       new UserController(
         router,
-        new UserService(new UserRepository(pool))
+        new UserService(new UserRepository(pool)),
       ).getRouter()
   }
 ];
