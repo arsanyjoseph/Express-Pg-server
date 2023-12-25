@@ -8,5 +8,5 @@ export function notFoundHandler(req: Request, res: Response, next: NextFunction)
         message: HttpErrorMessage.NOT_FOUND.NO_ROUTE,
         name: HttpErrorName.NOT_FOUND
     }
-    res.status(404).json(response)
+    next(response)
 }
