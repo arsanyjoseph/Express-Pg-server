@@ -7,6 +7,9 @@ import { UserController } from "../modules/user/user.controller";
 import { UserService } from "../modules/user/user.service";
 import { UserRepository } from "../modules/user/user.repository";
 import { type IRoutes } from "../types/router";
+import { PoolWrapper } from "../db/PoolWrapper/PoolWrapper";
+
+const userRepository = (pool: Pool): UserRepository => new UserRepository(new PoolWrapper("user", pool))
 
 export const routes: IRoutes[] = [
   {
@@ -15,7 +18,7 @@ export const routes: IRoutes[] = [
     router: (router: Router, pool: Pool) =>
       new AuthController(
         router,
-        new AuthService(new AuthRepository(pool, new UserRepository(pool)))
+        new AuthService(new AuthRepository(userRepository(pool)))
       ).getRouter()
   },
   {
@@ -24,7 +27,7 @@ export const routes: IRoutes[] = [
     router: (router: Router, pool: Pool) =>
       new UserController(
         router,
-        new UserService(new UserRepository(pool)),
+        new UserService(userRepository(pool)),
       ).getRouter()
   }
 ];
