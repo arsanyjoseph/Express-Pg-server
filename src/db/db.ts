@@ -7,20 +7,20 @@ export class DBConnection {
   private readonly sqlDirName = "/sql/"
   constructor(config: PoolConfig, queries?: Record<string, string>) {
     this.pool = new Pool(config);
-    if (queries) this.runInitialQueries(queries)
+    if (queries) this.runInitialQueries(queries).catch((err) => { console.log(err) });
   }
 
-  private runInitialQueries(tables: Record<string, string>): void {
-    for (const [table, sqlFilePath] of Object.entries(tables)) {
-      const query = this.readSqlQueryFiles(sqlFilePath)
-      this.runSqlQueryFiles(query).then(() => { console.log(`${table.toUpperCase()} is Ready`) }).catch((error) => { throw new Error(error as string) })
+  private async runInitialQueries(tables: Record<string, string>): Promise<void> {
+    for (const [, sqlFilePath] of Object.entries(tables)) {
+      const query = await this.readSqlQueryFiles(sqlFilePath)
+      await this.runSqlQueryFiles(query)
 
     }
   }
 
-  private readSqlQueryFiles(fileName: string): string {
+  private async readSqlQueryFiles(fileName: string): Promise<string> {
     const fullPath = path.resolve(path.join(__dirname, this.sqlDirName, fileName))
-    return readSqlFile(fullPath)
+    return await readSqlFile(fullPath)
   }
 
   private async runSqlQueryFiles(query: string): Promise<void> {
