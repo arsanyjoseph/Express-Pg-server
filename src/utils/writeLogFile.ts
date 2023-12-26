@@ -1,6 +1,6 @@
 import fs from "fs"
 
-function getLogFileName(): string {
+const getLogFileName = (): string => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, '0');
@@ -26,14 +26,14 @@ function createLogFile(filePath: string): void {
     });
 }
 
-function writeLogsToFile(filePath: string, entry: string): void {
+const writeLogsToFile = (filePath: string, entry: string): void => {
     fs.appendFile(filePath, entry, (err) => {
         if (err) console.warn("Error while writing log")
         else console.log("Successful Logging process")
     })
 }
 
-export function logToFile(logEntry: string, path: string): void {
+export const logToFile = (logEntry: string, path: string): void => {
     const fileName = `${getLogFileName()}.log`
     const logFilePath = `${path}${fileName}`
     createLogFile(logFilePath)

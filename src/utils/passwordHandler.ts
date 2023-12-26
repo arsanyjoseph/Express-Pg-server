@@ -14,9 +14,8 @@ const validatePassword = async (plainPassword: string, hash: string): Promise<bo
   return await compare(plainPassword, hash);
 };
 
-const passwordHandler = {
+export {
   generateSalt,
   hashPassword,
   validatePassword
 };
-export default passwordHandler;

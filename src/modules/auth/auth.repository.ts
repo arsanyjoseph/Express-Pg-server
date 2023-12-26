@@ -1,7 +1,7 @@
 import { type UserDto } from "../user/user.dto";
 import { type UserRepository } from "../user/user.repository";
 import { type AuthDto } from "./auth.dto";
-import passwordHandler from "../../utils/passwordHandler";
+import { hashPassword } from "../../utils/passwordHandler";
 import { UserRoles } from "../../types/userRoles";
 import { HttpErrorMessage } from "../../constants/httpResponse";
 import { UserEntity } from "../user/user.entity";
@@ -19,7 +19,7 @@ export class AuthRepository {
     const foundUser = await this.userRepository.getUserByEmail(email);
     if (foundUser)
       throw new Error(HttpErrorMessage.SERVER_ERROR.DUPLICATE_CREDS);
-    const hashedPassword = await passwordHandler.hashPassword(password);
+    const hashedPassword = await hashPassword(password);
     const newUser: UserDto = {
       [UserEntity.ID]: 0,
       [UserEntity.FIRST_NAME]: firstName,

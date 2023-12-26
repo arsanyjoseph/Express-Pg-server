@@ -1,6 +1,6 @@
 import { type AuthRepository } from "./auth.repository";
 import { type AuthDto } from "./auth.dto";
-import passwordHandler from "../../utils/passwordHandler";
+import { validatePassword } from "../../utils/passwordHandler";
 import { signToken } from "../../utils/jwt";
 import { type UserDto } from "../user/user.dto";
 import { removePasswordFromUser } from "../../utils/removePasswordFromUser";
@@ -11,7 +11,7 @@ export class AuthService {
 
   async login(authDto: AuthDto): Promise<string> {
     const user = await this.authRepository.login(authDto)
-    const isValid = await passwordHandler.validatePassword(authDto.password, user.password)
+    const isValid = await validatePassword(authDto.password, user.password)
     if (!isValid) throw new Error(HttpErrorMessage.BAD_REQUEST.INVALID_CREDS)
     const token = signToken({ id: user.id, email: user.email, role: user.role })
     return token

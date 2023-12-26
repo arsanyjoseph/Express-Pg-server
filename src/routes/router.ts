@@ -5,7 +5,7 @@ export class Router {
         this.router = ExpressRouter(options)
     }
 
-    registerMiddleware(middleware: (req: Request, res: Response, next: NextFunction) => any): void {
+    registerMiddleware(middleware: (req: Request, res: Response, next: NextFunction) => void): void {
         this.router.use(middleware)
     }
 
