@@ -71,7 +71,7 @@ export class UserController implements IRouter {
     this.userService
       .deleteUser(parseInt(id))
       .then(() => {
-        res.status(204);
+        res.status(204).json();
       })
       .catch((errorMessage) => {
         const error: IError = {
