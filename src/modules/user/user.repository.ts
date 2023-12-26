@@ -1,5 +1,5 @@
 import { type UserDto } from "./user.dto";
-import { HttpErrorMessage } from "../../constants/http";
+import { HttpErrorMessage } from "../../constants/httpResponse";
 import { type PoolWrapper } from "../../db/PoolWrapper/PoolWrapper";
 import { UserEntity } from "./user.entity";
 

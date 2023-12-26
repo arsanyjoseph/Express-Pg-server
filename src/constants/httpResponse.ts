@@ -30,5 +30,8 @@ export const HttpErrorMessage = {
     },
     NOT_FOUND: {
         NO_ROUTE: "Invalid URL"
+    },
+    FORBIDDEN: {
+        ACCESS_DENIED: " Access is denied"
     }
 }

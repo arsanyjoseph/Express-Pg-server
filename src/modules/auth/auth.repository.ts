@@ -3,7 +3,7 @@ import { type UserRepository } from "../user/user.repository";
 import { type AuthDto } from "./auth.dto";
 import passwordHandler from "../../utils/passwordHandler";
 import { UserRoles } from "../../types/userRoles";
-import { HttpErrorMessage } from "../../constants/http";
+import { HttpErrorMessage } from "../../constants/httpResponse";
 import { UserEntity } from "../user/user.entity";
 
 export class AuthRepository {

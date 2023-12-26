@@ -3,7 +3,7 @@ import { extractTokenFromHeaders, verifyToken } from "../utils/jwt";
 import { type IError } from "./errorHandler.middleware";
 import { type CustomRequest } from "../types/request";
 import { type IJwtPayload } from "../types/jwt";
-import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../constants/http";
+import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../constants/httpResponse";
 
 export function authMiddleware(req: CustomRequest, res: Response, next: NextFunction): void {
     try {

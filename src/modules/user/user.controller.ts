@@ -3,7 +3,7 @@ import { type UserService } from "./user.service";
 import { type IRouter } from "../../types/router";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type CustomRequest } from "../../types/request";
-import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/http";
+import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
 import { type UserDto } from "./user.dto";
 
 export class UserController implements IRouter {

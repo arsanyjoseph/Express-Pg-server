@@ -4,7 +4,7 @@ import passwordHandler from "../../utils/passwordHandler";
 import { signToken } from "../../utils/jwt";
 import { type UserDto } from "../user/user.dto";
 import { removePasswordFromUser } from "../../utils/removePasswordFromUser";
-import { HttpErrorMessage } from "../../constants/http";
+import { HttpErrorMessage } from "../../constants/httpResponse";
 
 export class AuthService {
   constructor(private readonly authRepository: AuthRepository) { }

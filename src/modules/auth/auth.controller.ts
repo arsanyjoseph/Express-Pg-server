@@ -4,7 +4,7 @@ import { type IRouter } from "../../types/router";
 import { type AuthDto } from "./auth.dto";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type UserDto } from "../user/user.dto";
-import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/http";
+import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
 
 export class AuthController implements IRouter {
   constructor(

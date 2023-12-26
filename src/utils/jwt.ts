@@ -1,7 +1,7 @@
 import { type Request } from "express"
 import jwt, { type JwtPayload } from "jsonwebtoken"
 import { type IJwtPayload } from "../types/jwt"
-import { HttpErrorMessage } from "../constants/http"
+import { HttpErrorMessage } from "../constants/httpResponse"
 
 const signToken = (payload: IJwtPayload): string => {
     const secret = process.env.JWT_SECRET as unknown as string

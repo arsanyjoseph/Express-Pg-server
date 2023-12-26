@@ -1,5 +1,5 @@
 import { type Request, type Response, type NextFunction } from "express"
-import { HttpErrorMessage, HttpStatusCode } from "../constants/http";
+import { HttpErrorMessage, HttpStatusCode } from "../constants/httpResponse";
 
 export interface IError extends Error {
     statusCode?: number

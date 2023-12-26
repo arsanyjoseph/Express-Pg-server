@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { type IError } from "./errorHandler.middleware";
-import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../constants/http";
+import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../constants/httpResponse";
 
 export function notFoundHandler(req: Request, res: Response, next: NextFunction): void {
     const response: IError = {
