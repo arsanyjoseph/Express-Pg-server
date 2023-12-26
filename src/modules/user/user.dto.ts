@@ -1,6 +1,7 @@
+import type { Column } from "../../types/queries";
 import { type UserRoles } from "../../types/userRoles";
 
-export interface UserDto {
+export interface UserDto extends Column {
   id: number;
   firstName: string;
   lastName: string;
