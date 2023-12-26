@@ -1,28 +1,8 @@
-interface ICell {
-    columnName: string
-    value: string
-}
+import type { ISelect, IInsert, IUpdate } from "../../types/queries"
 
-export interface ISelect {
-    columnName: string
-    tableName: string
-    condition?: string
-}
-
-export interface IInsert {
-    tableName: string
-    insertedColumns: ICell[]
-    returnColumns?: string[]
-}
-export interface IUpdate {
-    tableName: string
-    updatedColumns: ICell[]
-    condition?: string
-    returnColumns?: string[]
-}
-
-export const SelectQueryBuilder = ({ columnName, tableName, condition }: ISelect): string => {
-    const baseQuery = `SELECT ${columnName} from public.${tableName}`
+export const SelectQueryBuilder = ({ columns, tableName, condition }: ISelect): string => {
+    const columnsToString = typeof columns === "string" ? columns : columns.map((column) => `"${column}"`).join(", ")
+    const baseQuery = `SELECT ${columnsToString} from public.${tableName}`
     return condition ? `${baseQuery} WHERE ${condition}` : baseQuery
 }
 
@@ -33,7 +13,7 @@ export const UpdateQueryBuilder = ({ tableName, updatedColumns, condition, retur
     return `${baseQuery} SET ${update} ${condition ? 'WHERE ' + condition : ""} RETURNING ${returning}`
 }
 
-export const InsertQueryBuilder = ({ tableName, returnColumns, insertedColumns }: IInsert): string => {
+export const InsertQueryBuilder = ({ tableName, insertedColumns, returnColumns }: IInsert): string => {
     const baseQuery = `INSERT INTO public.${tableName}`
     const columnsString = `(${insertedColumns.map(column => `"${column.columnName}"`).join(", ")})`
     const valuesString = `(${insertedColumns.map(column => column.value).join(", ")})`
