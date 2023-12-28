@@ -1,23 +1,23 @@
+import type { Pool } from "pg";
 import { type Router, type Express, } from "express";
 import { type DBConnection } from "./db/db";
-import { type IRouterOptions } from "./types/router";
+import type { Module, IRouters } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/404Handler.middleware";
 
 export class App {
   constructor(
     private readonly app: Express,
-    { privateRouter, publicRouter, routes }: IRouterOptions,
+    routers: IRouters,
     middlewares: any[] = [],
-    db: DBConnection
+    db: DBConnection,
+    registerModules: (routers: IRouters, pool: Pool) => Module[]
   ) {
-    this.registerMiddleware(middlewares)
-    routes.forEach((route) => {
-      route.private ?
-        this.registerRouter(route.path, route.router(privateRouter, db.pool), route.middleware) :
-        this.registerRouter(route.path, route.router(publicRouter, db.pool), route.middleware)
-    });
     db.connect();
+    this.registerMiddleware(middlewares)
+    const modules = registerModules(routers, db.pool)
+    modules.forEach(module => { this.registerRouter(module.path, module.getRouter()) })
+
     this.registerMiddleware(notFoundHandler)
     this.registerMiddleware(errorHandlerMiddleware)
   }
