@@ -17,7 +17,8 @@ export const HttpErrorName = {
 
 export const HttpErrorMessage = {
     BAD_REQUEST: {
-        INVALID_CREDS: "Invalid Credentials"
+        INVALID_CREDS: "Invalid Credentials",
+        MISSING_CREDS: "Missing Credentials"
     },
     UNAUTHORIZED: {
         NO_TOKEN: "Please, Login",
