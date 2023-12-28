@@ -1,16 +1,14 @@
-import { type Express, type Router } from "express";
+import { type Router, type Express, } from "express";
 import { type DBConnection } from "./db/db";
-import { type IRoutes } from "./types/router";
+import { type IRouterOptions } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/404Handler.middleware";
 
 export class App {
   constructor(
     private readonly app: Express,
-    privateRouter: Router,
-    publicRouter: Router,
+    { privateRouter, publicRouter, routes }: IRouterOptions,
     middlewares: any[] = [],
-    routes: IRoutes[],
     db: DBConnection
   ) {
     this.registerMiddleware(middlewares)
