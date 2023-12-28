@@ -9,6 +9,6 @@ export const loginValidation: IValidation = {
     },
     email: {
         required: isRequiredValidation("email"),
-        validations: {}
+        validations: { regex: loginRegexValidations.email, string: loginStringValidations.email }
     }
 }

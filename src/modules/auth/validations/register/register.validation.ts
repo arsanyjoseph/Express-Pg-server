@@ -9,14 +9,14 @@ export const registerValidation: IValidation = {
     },
     email: {
         required: isRequiredValidation("email"),
-        validations: {}
+        validations: { regex: registerRegexValidations.email, string: registerStringValidations.email }
     },
     firstName: {
         required: isRequiredValidation("firstName"),
-        validations: {}
+        validations: { regex: registerRegexValidations.firstName, string: registerStringValidations.firstName }
     },
     lastName: {
         required: isRequiredValidation("lastName"),
-        validations: {}
+        validations: { regex: registerRegexValidations.lastName, string: registerStringValidations.lastName }
     },
 }
