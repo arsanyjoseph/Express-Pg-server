@@ -11,6 +11,10 @@ export class UserController implements IRouter {
     private readonly router: Router,
     private readonly userService: UserService
   ) {
+    this.registerRoutes()
+  }
+
+  private registerRoutes(): void {
     this.router.delete("/:id", (req, res, next): void => {
       this.deleteUser(req, res, next)
     });

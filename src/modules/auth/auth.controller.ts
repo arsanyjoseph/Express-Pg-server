@@ -5,16 +5,29 @@ import { type AuthDto } from "./auth.dto";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type UserDto } from "../user/user.dto";
 import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
+import { registerValidation } from "./validations/register/register.validation";
+import { loginValidation } from "./validations/login/login.validation";
+import { ValidatorMiddleware } from "../../middlewares/validator.middleware";
 
 export class AuthController implements IRouter {
+  validator: ValidatorMiddleware = new ValidatorMiddleware()
   constructor(
     private readonly router: Router,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
   ) {
+    this.registerRoutes()
+  }
+
+  private registerRoutes(): void {
     this.router.post("/login", (req, res, next) => {
+
+      this.validator.validate(req, res, next, loginValidation)
+    }, (req, res, next) => {
       this.loginHandler(req, res, next)
     });
     this.router.post("/register", (req, res, next) => {
+      this.validator.validate(req, res, next, registerValidation)
+    }, (req, res, next) => {
       this.registerUser(req, res, next)
     });
   }
