@@ -7,13 +7,13 @@ import { type UserDto } from "../user/user.dto";
 import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
 import { registerValidation } from "./validations/register/register.validation";
 import { loginValidation } from "./validations/login/login.validation";
-import { ValidatorMiddleware } from "../../middlewares/validator.middleware";
+import { type ValidatorMiddleware } from "../../middlewares/validator.middleware";
 
 export class AuthController implements IRouter {
-  validator: ValidatorMiddleware = new ValidatorMiddleware()
   constructor(
     private readonly router: Router,
     private readonly authService: AuthService,
+    private readonly validator: ValidatorMiddleware 
   ) {
     this.registerRoutes()
   }
