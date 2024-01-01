@@ -12,9 +12,9 @@ export class ValidatorMiddleware {
         message: ""
     }
 
-    validate(req: Request, res: Response, next: NextFunction, routeValidations: IValidation): void {
+    validate<T>(req: Request, res: Response, next: NextFunction, routeValidations: IValidation<T>): void {
         this.clearErrors()
-        for (const [key, { required, validations }] of Object.entries(routeValidations)) {
+        for (const [key, { required, validations }] of Object.entries<MethodValidation>(routeValidations)) {
             this.checkRequiredProps(key, required, req)
             if (req.body[key]) this.runValidations(req.body[key], validations)
         }
