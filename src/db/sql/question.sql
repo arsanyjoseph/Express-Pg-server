@@ -5,6 +5,7 @@ DO $$ BEGIN IF NOT EXISTS (
         AND tablename = 'question'
 ) THEN CREATE TABLE IF NOT EXISTS question (
     "id" SERIAL PRIMARY KEY,
+    "body" VARCHAR(255) NOT NULL,
     "categoryId" INTEGER NOT NULL,
     "userId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP NOT NULL,
