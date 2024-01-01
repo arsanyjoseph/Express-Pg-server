@@ -1,11 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import { App } from "./main";
-import { registerModules } from "./routes/routes";
+import { registerModules } from "./utils/registerModules";
 import { middlewares } from "./middlewares/express.middleware";
 import { authMiddleware } from "./middlewares/auth.middleware";
 import { DBConnection } from "./db/db";
-import { Router } from "./routes/router";
+import { Router } from "./router/router";
 import { initialQueries } from "./constants/initialQueries";
 import { type IRouters } from "./types/router";
 

@@ -6,23 +6,22 @@ import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/404Handler.middleware";
 
 export class App {
+  private readonly modules: Module[]
   constructor(
     private readonly app: Express,
-    routers: IRouters,
+    private readonly routers: IRouters,
     middlewares: any[] = [],
-    db: DBConnection,
-    registerModules: (routers: IRouters, pool: Pool) => Module[]
+    private readonly db: DBConnection,
+    registerModules: (app: App) => Module[]
   ) {
     db.connect();
     this.registerMiddleware(middlewares)
-    const modules = registerModules(routers, db.pool)
-    modules.forEach(module => { this.registerRouter(module.path, module.getRouter()) })
-
+    this.modules = registerModules(this)
     this.registerMiddleware(notFoundHandler)
     this.registerMiddleware(errorHandlerMiddleware)
   }
 
-  private registerRouter(routePath: string, router: Router, middleware?: () => void): void {
+  registerRouter(routePath: string, router: Router, middleware?: () => void): void {
     if (middleware !== undefined) {
       this.app.use(routePath, middleware, router);
     } else {
@@ -32,6 +31,14 @@ export class App {
 
   private registerMiddleware(middleware: any): void {
     this.app.use(middleware);
+  }
+
+  public getRouters(): IRouters {
+    return this.routers
+  }
+
+  public getPool(): Pool {
+    return this.db.pool
   }
 
   public listen(port?: string): void {
