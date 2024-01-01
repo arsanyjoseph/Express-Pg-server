@@ -22,7 +22,6 @@ export class CategoryController extends Controller {
     }
 
     registerRoutes(): void {
-
         this.router.get("/:category", (req, res, next): void => { this.getCategoryByName(req, res, next) })
         this.router.get("/user/:userId", (req, res, next): void => { this.getCategoryByUserId(req, res, next) })
 

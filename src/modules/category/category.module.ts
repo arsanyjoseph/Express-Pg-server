@@ -1,4 +1,3 @@
-import { type Router } from "express";
 import type { App } from "../../main";
 import { CategoryRepository } from "./category.repository";
 import { CategoryService } from "./category.service";
@@ -14,10 +13,5 @@ export class CateogryModule extends Module {
         this.categoryRepository = new CategoryRepository(this.poolWrapper)
         this.categoryService = new CategoryService(this.categoryRepository)
         this.categoryController = new CategoryController(this.router, this.categoryService, app.getValidator())
-        app.registerRouter(this.path, this.getRouter())
-    }
-
-    private getRouter(): Router {
-        return this.categoryController.getRouter()
     }
 }

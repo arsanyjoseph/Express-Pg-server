@@ -1,4 +1,3 @@
-import { type Router } from "express";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthRepository } from "./auth.repository";
@@ -15,10 +14,5 @@ export class AuthModule extends Module {
         this.authRepository = new AuthRepository(this.poolWrapper, new UserRepository(this.poolWrapper))
         this.authService = new AuthService(this.authRepository)
         this.authController = new AuthController(this.router, this.authService, app.getValidator())
-        app.registerRouter(this.path, this.getRouter())
-    }
-
-    private getRouter(): Router {
-        return this.authController.getRouter()
     }
 }

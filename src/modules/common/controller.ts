@@ -9,8 +9,4 @@ export abstract class Controller {
     registerRoutes(): void {
         throw new Error("This method should be implemented by subclass")
     }
-
-    getRouter(): Router {
-        return this.router
-    }
 }

@@ -1,7 +1,6 @@
 import type { Pool } from "pg";
 import { type Router, type Express, } from "express";
 import { type DBConnection } from "./db/db";
-import type { IRouters } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/404Handler.middleware";
 import type { ValidatorMiddleware } from "./middlewares/validator.middleware";
@@ -11,7 +10,6 @@ export class App {
   private readonly modules: Module[]
   constructor(
     private readonly app: Express,
-    private readonly routers: IRouters,
     middlewares: any[] = [],
     private readonly db: DBConnection,
     registerModules: (app: App) => Module[],
@@ -24,12 +22,8 @@ export class App {
     this.registerMiddleware(errorHandlerMiddleware)
   }
 
-  registerRouter(routePath: string, router: Router, middleware?: () => void): void {
-    if (middleware !== undefined) {
-      this.app.use(routePath, middleware, router);
-    } else {
-      this.app.use(routePath, router);
-    }
+  registerRouter(routePath: string, router: Router): void {
+    this.app.use(routePath, router);
   }
 
   getValidator(): ValidatorMiddleware {
@@ -38,10 +32,6 @@ export class App {
 
   private registerMiddleware(middleware: any): void {
     this.app.use(middleware);
-  }
-
-  public getRouters(): IRouters {
-    return this.routers
   }
 
   public getPool(): Pool {
