@@ -1,9 +1,9 @@
-import type { Column } from "../../types/queries";
 import { type QuestionTypes } from "../../types/questionType";
 
-export interface QuestionDto extends Column {
+export interface QuestionDto {
     id: number;
     categoryId: number;
+    body: string;
     userId: number;
     type: QuestionTypes;
     createdAt: string;
