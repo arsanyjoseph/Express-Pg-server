@@ -1,11 +1,9 @@
 import { type UserDto } from "./user.dto";
 import { HttpErrorMessage } from "../../constants/httpResponse";
-import { type PoolWrapper } from "../../db/PoolWrapper/PoolWrapper";
 import { UserEntity } from "./user.entity";
+import { Repository } from "../common/repository";
 
-export class UserRepository {
-  constructor(private readonly poolWrapper: PoolWrapper) { }
-
+export class UserRepository extends Repository {
   async getUserByEmail(email: string): Promise<UserDto> {
     const user = await this.poolWrapper.findOne<UserDto>("*", { email })
     return user;

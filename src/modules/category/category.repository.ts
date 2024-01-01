@@ -1,11 +1,9 @@
 import { HttpErrorMessage } from "../../constants/httpResponse";
-import { type PoolWrapper } from "../../db/PoolWrapper/PoolWrapper";
+import { Repository } from "../common/repository";
 import { type CategoryDto } from "./category.dto";
 import { CategoryEntity } from "./category.entity";
 
-export class CategoryRepository {
-    constructor(private readonly poolWrapper: PoolWrapper) { }
-
+export class CategoryRepository extends Repository {
     async getCategoryById(id: number): Promise<CategoryDto> {
         const category = await this.poolWrapper.findOne<CategoryDto>("*", { id })
         return category

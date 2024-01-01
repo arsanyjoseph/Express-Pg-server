@@ -5,9 +5,14 @@ import { hashPassword } from "../../utils/passwordHandler";
 import { UserRoles } from "../../types/userRoles";
 import { HttpErrorMessage } from "../../constants/httpResponse";
 import { UserEntity } from "../user/user.entity";
+import { Repository } from "../common/repository";
+import { type PoolWrapper } from "../../db/PoolWrapper/PoolWrapper";
 
-export class AuthRepository {
-  constructor(private readonly userRepository: UserRepository) { }
+export class AuthRepository extends Repository {
+  constructor(poolWrapper: PoolWrapper, private readonly userRepository: UserRepository) {
+    super(poolWrapper)
+  }
+
   async login({ email }: AuthDto): Promise<UserDto> {
     const foundUser = await this.userRepository.getUserByEmail(email)
     if (!foundUser) throw new Error(HttpErrorMessage.UNAUTHORIZED.USER_NOT_FOUND)
