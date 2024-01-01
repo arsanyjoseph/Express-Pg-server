@@ -14,7 +14,7 @@ export class UserRepository extends Repository {
     return user;
   }
 
-  async createUser(userDto: UserDto): Promise<UserDto> {
+  async createUser(userDto: Omit<UserDto, "id">): Promise<UserDto> {
     const users = await this.poolWrapper.create<UserDto>(userDto)
     return users[0]
   }
