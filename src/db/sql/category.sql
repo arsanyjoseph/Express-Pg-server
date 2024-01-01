@@ -5,7 +5,7 @@ DO $$ BEGIN IF NOT EXISTS (
         AND tablename = 'category'
 ) THEN CREATE TABLE IF NOT EXISTS category (
     "id" SERIAL PRIMARY KEY,
-    "name" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) UNIQUE NOT NULL,
     "description" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL,
     "updatedAt" TIMESTAMP NOT NULL,
