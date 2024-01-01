@@ -13,7 +13,7 @@ export class UserModule extends Module {
         super("/user", "user", true, app)
         this.userRepository = new UserRepository(this.poolWrapper)
         this.userService = new UserService(this.userRepository)
-        this.userController = new UserController(this.router, this.userService)
+        this.userController = new UserController(this.router, this.userService, app.getValidator())
         app.registerRouter(this.path, this.getRouter())
     }
 

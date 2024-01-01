@@ -1,6 +1,5 @@
 import { type Router, type Request, type Response, type NextFunction } from "express";
 import { type AuthService } from "./auth.service";
-import { type IRouter } from "../../types/router";
 import { type AuthDto } from "./auth.dto";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type UserDto } from "../user/user.dto";
@@ -8,17 +7,19 @@ import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants
 import { registerValidation } from "./validations/register/register.validation";
 import { loginValidation } from "./validations/login/login.validation";
 import { type ValidatorMiddleware } from "../../middlewares/validator.middleware";
+import { Controller } from "../common/controller";
 
-export class AuthController implements IRouter {
+export class AuthController extends Controller {
   constructor(
-    private readonly router: Router,
+    router: Router,
     private readonly authService: AuthService,
-    private readonly validator: ValidatorMiddleware
+    validator: ValidatorMiddleware
   ) {
+    super(router, validator)
     this.registerRoutes()
   }
 
-  private registerRoutes(): void {
+  registerRoutes(): void {
     this.router.post("/login", (req, res, next) => {
 
       this.validator.validate(req, res, next, loginValidation)

@@ -1,22 +1,25 @@
 import { type Router, type NextFunction, type Response, type Request } from "express";
 import { type UserService } from "./user.service";
-import { type IRouter } from "../../types/router";
 import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type CustomRequest } from "../../types/request";
 import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
 import { type UserDto } from "./user.dto";
 import { roleGuardMiddleware } from "../../middlewares/roleGuard.middleware";
 import { UserRoles } from "../../types/userRoles";
+import { Controller } from "../common/controller";
+import { type ValidatorMiddleware } from "../../middlewares/validator.middleware";
 
-export class UserController implements IRouter {
+export class UserController extends Controller {
   constructor(
-    private readonly router: Router,
-    private readonly userService: UserService
+    router: Router,
+    private readonly userService: UserService,
+    validator: ValidatorMiddleware
   ) {
+    super(router, validator)
     this.registerRoutes()
   }
 
-  private registerRoutes(): void {
+  registerRoutes(): void {
     this.router.delete("/me", (req, res, next) => {
       this.deleteMyProfile(req, res, next)
     })
@@ -27,10 +30,6 @@ export class UserController implements IRouter {
     });
     this.router.get("/me", (req, res, next) => { this.getProfile(req, res, next) })
     this.router.put("/me", (req, res, next) => { this.updateProfile(req, res, next) })
-  }
-
-  getRouter(): Router {
-    return this.router;
   }
 
   private getProfile(req: CustomRequest, res: Response, next: NextFunction): void {

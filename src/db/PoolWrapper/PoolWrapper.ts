@@ -7,7 +7,7 @@ export class PoolWrapper {
     constructor(private readonly tableName: string, private readonly pool: Pool) {
     }
 
-    private async query<T extends QueryResultRow>(query: {
+    async query<T extends QueryResultRow>(query: {
         text: string;
         values: ColumnValue[];
     }): Promise<QueryResult<T>> {

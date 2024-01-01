@@ -1,5 +1,4 @@
 import { type Router, type NextFunction, type Response, type Request } from "express";
-import type { IRouter } from "../../types/router";
 import { type CategoryService } from "./category.service";
 import { type CategoryDto } from "./category.dto";
 import { type IError } from "../../middlewares/errorHandler.middleware";
@@ -10,17 +9,19 @@ import { createCategoryValidation } from "./validations/createCategory.validatio
 import { roleGuardMiddleware } from "../../middlewares/roleGuard.middleware";
 import { UserRoles } from "../../types/userRoles";
 import { updateCategoryValidation } from "./validations/updateCategory.validation";
+import { Controller } from "../common/controller";
 
-export class CategoryController implements IRouter {
+export class CategoryController extends Controller {
     constructor(
-        private readonly router: Router,
+        router: Router,
         private readonly categoryService: CategoryService,
-        private readonly validator: ValidatorMiddleware
+        validator: ValidatorMiddleware
     ) {
+        super(router, validator)
         this.registerRoutes()
     }
 
-    private registerRoutes(): void {
+    registerRoutes(): void {
 
         this.router.get("/:category", (req, res, next): void => { this.getCategoryByName(req, res, next) })
         this.router.get("/user/:userId", (req, res, next): void => { this.getCategoryByUserId(req, res, next) })
@@ -120,9 +121,5 @@ export class CategoryController implements IRouter {
             }
             next(error);
         }
-    }
-
-    getRouter(): Router {
-        return this.router;
     }
 }
