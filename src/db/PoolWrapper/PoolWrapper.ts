@@ -56,7 +56,7 @@ export class PoolWrapper {
         return records
     }
 
-    async create<T extends QueryResultRow>(createdColumns: Column): Promise<T[]> {
+    async create<T extends QueryResultRow>(createdColumns: T): Promise<T[]> {
         const { formattedColumns, values: columnValues } = formatUpdatedColumns(createdColumns)
 
         const queryParams: IInsert = {
