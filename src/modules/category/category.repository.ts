@@ -14,6 +14,11 @@ export class CategoryRepository extends Repository {
         return category
     }
 
+    async getCategoryByUserId(userId: number): Promise<CategoryDto[]> {
+        const categories = await this.poolWrapper.findAll<CategoryDto>("*", { userId })
+        return categories
+    }
+
     async createCategory(categoryDto: CategoryDto): Promise<CategoryDto> {
         const category: CategoryDto = {
             ...categoryDto,

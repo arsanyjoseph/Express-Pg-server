@@ -1,5 +1,4 @@
 import { type Router } from "express";
-import { PoolWrapper } from "../../db/PoolWrapper/PoolWrapper";
 import type { App } from "../../main";
 import { CategoryRepository } from "./category.repository";
 import { CategoryService } from "./category.service";
@@ -12,8 +11,6 @@ export class CateogryModule extends Module {
     private readonly categoryController: CategoryController
     constructor(app: App) {
         super("/category", "category", true, app)
-        this.router = this.isPrivate ? app.getRouters().privateRouter : app.getRouters().publicRouter
-        this.poolWrapper = new PoolWrapper(this.tableName, app.getPool())
         this.categoryRepository = new CategoryRepository(this.poolWrapper)
         this.categoryService = new CategoryService(this.categoryRepository)
         this.categoryController = new CategoryController(this.router, this.categoryService, app.getValidator())

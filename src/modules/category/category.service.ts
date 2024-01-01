@@ -12,6 +12,10 @@ export class CategoryService {
         return await this.categoryRepository.getCategoryByName(name);
     }
 
+    async getCategoryByUserId(userId: number): Promise<CategoryDto[]> {
+        return await this.categoryRepository.getCategoryByUserId(userId);
+    }
+
     async updateCategory(categoryDto: CategoryDto): Promise<CategoryDto> {
         return await this.categoryRepository.updateCategory(categoryDto)
     }
