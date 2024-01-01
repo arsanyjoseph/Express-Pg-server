@@ -30,7 +30,8 @@ export const HttpErrorMessage = {
         DUPLICATE_CREDS: "Email is already registered. Try Signing In"
     },
     NOT_FOUND: {
-        NO_ROUTE: "Invalid URL"
+        NO_ROUTE: "Invalid URL",
+        NO_RECORD: "Not Found",
     },
     FORBIDDEN: {
         ACCESS_DENIED: " Access is denied"
