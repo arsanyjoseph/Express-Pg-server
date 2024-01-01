@@ -13,7 +13,7 @@ export class AuthController implements IRouter {
   constructor(
     private readonly router: Router,
     private readonly authService: AuthService,
-    private readonly validator: ValidatorMiddleware 
+    private readonly validator: ValidatorMiddleware
   ) {
     this.registerRoutes()
   }
@@ -23,7 +23,7 @@ export class AuthController implements IRouter {
 
       this.validator.validate(req, res, next, loginValidation)
     }, (req, res, next) => {
-      this.loginHandler(req, res, next)
+      this.loginUser(req, res, next)
     });
     this.router.post("/register", (req, res, next) => {
       this.validator.validate(req, res, next, registerValidation)
@@ -32,7 +32,7 @@ export class AuthController implements IRouter {
     });
   }
 
-  private loginHandler(req: Request, res: Response, next: NextFunction): void {
+  private loginUser(req: Request, res: Response, next: NextFunction): void {
     if (req.body?.email && req.body?.password) {
       this.authService
         .login(req.body as AuthDto)
@@ -51,8 +51,8 @@ export class AuthController implements IRouter {
   }
 
   private registerUser(req: Request, res: Response, next: NextFunction): void {
-    const response = this.authService.register(req.body as UserDto);
-    response
+    const userPromise = this.authService.register(req.body as UserDto);
+    userPromise
       .then((user) => res.status(201).json(user))
       .catch((err) => {
         const error: IError = {
