@@ -25,8 +25,7 @@ export class AuthRepository extends Repository {
     if (foundUser)
       throw new Error(HttpErrorMessage.SERVER_ERROR.DUPLICATE_CREDS);
     const hashedPassword = await hashPassword(password);
-    const newUser: UserDto = {
-      [UserEntity.ID]: 0,
+    const newUser: Omit<UserDto, "id"> = {
       [UserEntity.FIRST_NAME]: firstName,
       [UserEntity.LAST_NAME]: lastName,
       [UserEntity.EMAIL]: email,
