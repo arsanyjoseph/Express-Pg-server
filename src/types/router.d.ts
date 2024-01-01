@@ -4,7 +4,7 @@ export interface IRouter {
   getRouter: () => Router;
 }
 
-export interface Module extends IRouter {
+export interface Module {
   path: string
   isPrivate: boolean
 }
