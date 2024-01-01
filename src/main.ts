@@ -4,6 +4,7 @@ import { type DBConnection } from "./db/db";
 import type { Module, IRouters } from "./types/router";
 import errorHandlerMiddleware from "./middlewares/errorHandler.middleware";
 import { notFoundHandler } from "./middlewares/404Handler.middleware";
+import type { ValidatorMiddleware } from "./middlewares/validator.middleware";
 
 export class App {
   private readonly modules: Module[]
@@ -12,7 +13,8 @@ export class App {
     private readonly routers: IRouters,
     middlewares: any[] = [],
     private readonly db: DBConnection,
-    registerModules: (app: App) => Module[]
+    registerModules: (app: App) => Module[],
+    private readonly validator:ValidatorMiddleware
   ) {
     db.connect();
     this.registerMiddleware(middlewares)
@@ -27,6 +29,10 @@ export class App {
     } else {
       this.app.use(routePath, router);
     }
+  }
+
+  getValidator():ValidatorMiddleware {
+    return this.validator
   }
 
   private registerMiddleware(middleware: any): void {

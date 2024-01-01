@@ -8,6 +8,7 @@ import { DBConnection } from "./db/db";
 import { Router } from "./router/router";
 import { initialQueries } from "./constants/initialQueries";
 import { type IRouters } from "./types/router";
+import { ValidatorMiddleware } from "./middlewares/validator.middleware";
 
 dotenv.config();
 
@@ -25,6 +26,6 @@ const db = new DBConnection({
 }, initialQueries);
 
 
-const app = new App(express(), routerOptions, middlewares, db, registerModules);
+const app = new App(express(), routerOptions, middlewares, db, registerModules, new ValidatorMiddleware());
 
 app.listen(process.env.PORT);

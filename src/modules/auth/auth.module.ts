@@ -5,7 +5,6 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { AuthRepository } from "./auth.repository";
 import { UserRepository } from "../user/user.repository";
-import { ValidatorMiddleware } from "../../middlewares/validator.middleware";
 import type { App } from "../../main";
 
 export class AuthModule implements Module {
@@ -22,7 +21,7 @@ export class AuthModule implements Module {
         this.poolWrapper = new PoolWrapper(this.tableName, app.getPool())
         this.authRepository = new AuthRepository(new UserRepository(this.poolWrapper))
         this.authService = new AuthService(this.authRepository)
-        this.authController = new AuthController(this.router, this.authService, new ValidatorMiddleware())
+        this.authController = new AuthController(this.router, this.authService, app.getValidator())
         app.registerRouter(this.path, this.getRouter())
     }
 
