@@ -1,6 +1,4 @@
-import type { Column } from "../../types/queries";
-
-export interface CategoryDto extends Column {
+export interface CategoryDto {
     id: number;
     name: string;
     description: string;
@@ -9,5 +7,4 @@ export interface CategoryDto extends Column {
     deletedAt: string | null;
     isActive: boolean;
     userId: number;
-
 }

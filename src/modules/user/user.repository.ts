@@ -2,6 +2,7 @@ import { type UserDto } from "./user.dto";
 import { HttpErrorMessage } from "../../constants/httpResponse";
 import { UserEntity } from "./user.entity";
 import { Repository } from "../common/repository";
+import { type OmitId } from "../../types/utils";
 
 export class UserRepository extends Repository {
   async getUserByEmail(email: string): Promise<UserDto> {
@@ -14,8 +15,8 @@ export class UserRepository extends Repository {
     return user;
   }
 
-  async createUser(userDto: Omit<UserDto, "id">): Promise<UserDto> {
-    const users = await this.poolWrapper.create<UserDto>(userDto)
+  async createUser(userDto: OmitId<UserDto>): Promise<UserDto> {
+    const users = await this.poolWrapper.create<UserDto>(userDto as UserDto)
     return users[0]
   }
 

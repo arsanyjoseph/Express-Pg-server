@@ -21,4 +21,4 @@ export interface MethodValidation {
     }
 }
 
-export type IValidation = Record<string, MethodValidation>
+export type IValidation<T> = Record<keyof T, MethodValidation> 
