@@ -5,6 +5,8 @@ import { type IError } from "../../middlewares/errorHandler.middleware";
 import { type CustomRequest } from "../../types/request";
 import { HttpErrorMessage, HttpErrorName, HttpStatusCode } from "../../constants/httpResponse";
 import { type UserDto } from "./user.dto";
+import { roleGuardMiddleware } from "../../middlewares/roleGuard.middleware";
+import { UserRoles } from "../../types/userRoles";
 
 export class UserController implements IRouter {
   constructor(
@@ -15,8 +17,13 @@ export class UserController implements IRouter {
   }
 
   private registerRoutes(): void {
-    this.router.delete("/:id", (req, res, next): void => {
-      this.deleteUser(req, res, next)
+    this.router.delete("/me", (req, res, next) => {
+      this.deleteMyProfile(req, res, next)
+    })
+    this.router.delete("/:id", (req, res, next) => {
+      roleGuardMiddleware(req, res, next, UserRoles.ADMIN)
+    }, (req, res, next): void => {
+      this.deleteProfile(req, res, next)
     });
     this.router.get("/me", (req, res, next) => { this.getProfile(req, res, next) })
     this.router.put("/me", (req, res, next) => { this.updateProfile(req, res, next) })
@@ -70,10 +77,9 @@ export class UserController implements IRouter {
     }
   }
 
-  private deleteUser(req: Request, res: Response, next: NextFunction): any {
-    const { id } = req.params;
+  private deleteProfileById(res: Response, next: NextFunction, id: number): void {
     this.userService
-      .deleteUser(parseInt(id))
+      .deleteUser(id)
       .then(() => {
         res.status(204).json();
       })
@@ -85,5 +91,25 @@ export class UserController implements IRouter {
         }
         next(error);
       });
+  }
+
+  private deleteProfile(req: Request, res: Response, next: NextFunction): void {
+    const { id } = req.params;
+    this.deleteProfileById(res, next, parseInt(id))
+  }
+
+
+  private deleteMyProfile(req: CustomRequest, res: Response, next: NextFunction): void {
+    if (req.user) {
+      const { id } = req.user
+      this.deleteProfileById(res, next, id)
+    } else {
+      const error: IError = {
+        message: HttpErrorMessage.UNAUTHORIZED.NO_TOKEN,
+        name: HttpErrorName.UNAUTHORIZED,
+        statusCode: HttpStatusCode.UNAUTHORIZED
+      }
+      next(error)
+    }
   }
 }
