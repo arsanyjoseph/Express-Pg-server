@@ -10,7 +10,7 @@ export const formatWhereCondition = (condition: Record<string, string | boolean 
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
         values.push(condition[key])
-        conditonString = `${conditonString} ${key} = $${i + 1 + offset}`
+        conditonString = `${conditonString} "${key}" = $${i + 1 + offset}`
         if (i + 1 < keys.length) {
             conditonString = `${conditonString} AND`
         }
