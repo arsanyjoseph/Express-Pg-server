@@ -8,6 +8,12 @@ export interface IStringValidation {
     errMessage: string
 }
 
+export interface IEnumValidation {
+    test: (s: string | number, ref: Array<string | number>) => boolean,
+    ref: Array<number | string>
+    errMessage: string
+}
+
 type ValidationType<T> = Record<string, Record<string, T>>
 
 export interface MethodValidation {
@@ -17,7 +23,8 @@ export interface MethodValidation {
     }
     validations: {
         regex?: Record<string, IRegexValidation>,
-        string?: Record<string, IStringValidation>
+        string?: Record<string, IStringValidation>,
+        enum?: Record<string, IEnumValidation>,
     }
 }
 

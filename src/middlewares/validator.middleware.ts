@@ -1,4 +1,4 @@
-import type { MethodValidation, IValidation, IRegexValidation, IStringValidation } from './../types/validation.d';
+import type { MethodValidation, IValidation, IRegexValidation, IStringValidation, IEnumValidation } from './../types/validation.d';
 import type { Request, NextFunction, Response } from "express"
 import { type IError } from './errorHandler.middleware';
 import { HttpErrorName, HttpStatusCode } from '../constants/httpResponse';
@@ -12,7 +12,7 @@ export class ValidatorMiddleware {
         message: ""
     }
 
-    validate<T>(req: Request, res: Response, next: NextFunction, routeValidations: IValidation<T>): void {        
+    validate<T>(req: Request, res: Response, next: NextFunction, routeValidations: IValidation<T>): void {
         this.clearErrors()
         for (const [key, { required, validations }] of Object.entries<MethodValidation>(routeValidations)) {
             this.checkRequiredProps(key, required, req)
@@ -43,12 +43,15 @@ export class ValidatorMiddleware {
         return req.body[attrib] !== undefined
     }
 
-    private runValidations(value: any, { regex, string }: MethodValidation["validations"]): void {
+    private runValidations(value: any, { enum: propEnum, regex, string, }: MethodValidation["validations"]): void {
         if (regex) {
             this.runRegexValidations(value, regex)
         }
         if (string) {
             this.runStringValidations(value, string)
+        }
+        if (propEnum) {
+            this.runEnumValidations(value, propEnum)
         }
     }
 
@@ -66,8 +69,17 @@ export class ValidatorMiddleware {
         }))
     }
 
+    private runEnumValidations(value: any, enumValidations: Record<string, IEnumValidation>): void {
+        Object.values(enumValidations).forEach((validation => {
+            const isValid = this.enumValidator(value as string | number, validation.test, validation.ref)
+            if (!isValid) this.errorMessages.push(validation.errMessage)
+        }))
+    }
+
     private regexValidator(string: string, regex: IRegexValidation["regex"]): boolean { return regex.test(string) }
 
     private stringValidator(password: string, test: IStringValidation["test"]): boolean { return test(password) }
+
+    private enumValidator(value: string | number, test: IEnumValidation["test"], ref: Array<string | number>): boolean { return test(value, ref) }
 }
 
