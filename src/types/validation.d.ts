@@ -28,4 +28,9 @@ export interface MethodValidation {
     }
 }
 
-export type IValidation<T> = Record<keyof T, MethodValidation> 
+export type IValidation<T> = Record<keyof T, MethodValidation>
+
+export interface SanityOptions {
+    sanitizeRequest: boolean
+    silentProcess: boolean
+}

@@ -8,6 +8,7 @@ import { roleGuardMiddleware } from "../../middlewares/roleGuard.middleware";
 import { UserRoles } from "../../types/userRoles";
 import { Controller } from "../common/controller";
 import { type ValidatorMiddleware } from "../../middlewares/validator.middleware";
+import { updateProfileValidation } from "./validations/updateProfile.validation";
 
 export class UserController extends Controller {
   constructor(
@@ -29,7 +30,7 @@ export class UserController extends Controller {
       this.deleteProfile(req, res, next)
     });
     this.router.get("/me", (req, res, next) => { this.getProfile(req, res, next) })
-    this.router.put("/me", (req, res, next) => { this.updateProfile(req, res, next) })
+    this.router.put("/me", (req, res, next) => { this.validator.validate(req, res, next, updateProfileValidation) }, (req, res, next) => { this.updateProfile(req, res, next) })
   }
 
   private getProfile(req: CustomRequest, res: Response, next: NextFunction): void {

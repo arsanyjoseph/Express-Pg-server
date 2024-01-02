@@ -1,16 +1,19 @@
-import type { MethodValidation, IValidation, IRegexValidation, IStringValidation, IEnumValidation } from './../types/validation.d';
+import type { MethodValidation, IValidation, IRegexValidation, IStringValidation, IEnumValidation, SanityOptions } from './../types/validation.d';
 import type { Request, NextFunction, Response } from "express"
 import { type IError } from './errorHandler.middleware';
 import { HttpErrorName, HttpStatusCode } from '../constants/httpResponse';
 
 
 export class ValidatorMiddleware {
+    private invalidFields: string[] = []
     private errorMessages: string[] = []
     private readonly error: IError = {
         name: HttpErrorName.BAD_REQUEST,
         statusCode: HttpStatusCode.BAD_REQUEST,
         message: ""
     }
+
+    constructor(private readonly sanityOptions: SanityOptions = { sanitizeRequest: false, silentProcess: false }) { }
 
     validate<T>(req: Request, res: Response, next: NextFunction, routeValidations: IValidation<T>): void {
         this.clearErrors()
@@ -22,12 +25,39 @@ export class ValidatorMiddleware {
             this.error.message = this.errorMessages.join(",\n")
             next(this.error)
         }
+        if (this.sanityOptions.sanitizeRequest) {
+            this.sanitizeRequestBody<T>(req, routeValidations)
+        }
+        if (this.invalidFields.length > 0 && !this.sanityOptions.silentProcess) {
+            this.error.message = `Request Body has Invalid Field(s): [${this.invalidFields.join(", ")}]`
+            next(this.error)
+        }
         next()
+    }
+
+    private requestBodyFilter(key: string, allowedFields: string[]): boolean {
+        if (allowedFields.includes(key)) {
+            return true
+        } else {
+            this.invalidFields.push(key)
+            return false
+        }
+    }
+
+    private sanitizeRequestBody<T>(req: Request, routeValidations: IValidation<T>): void {
+        const allowedFields = Object.keys(routeValidations)
+        req.body = Object.keys(req.body as Record<string, unknown>)
+            .filter(key => this.requestBodyFilter(key, allowedFields))
+            .reduce((obj: Record<string, unknown>, key) => {
+                obj[key] = req.body[key];
+                return obj;
+            }, {});
     }
 
     private clearErrors(): void {
         this.error.message = ""
         this.errorMessages = []
+        this.invalidFields = []
     }
 
     private checkRequiredProps(key: string, { value, errMessage }: MethodValidation["required"], req: Request): void {

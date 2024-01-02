@@ -18,6 +18,6 @@ const db = new DBConnection({
 }, initialQueries);
 
 
-const app = new App(express(), middlewares, db, registerModules, new ValidatorMiddleware());
+const app = new App(express(), middlewares, db, registerModules, new ValidatorMiddleware({ sanitizeRequest: true, silentProcess: false }));
 
 app.listen(process.env.PORT);
